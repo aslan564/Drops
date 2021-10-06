@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph.xml"
+    app:startDestination="@id/navigation_chat_fragment">
+
+    <fragment
+        android:id="@+id/navigation_chat_registry"
+        android:name="aslan.aslanov.drops.ui.fragment.loginOrRegister.RegistryFragment"
+        android:label="Registry"
+        tools:layout="@layout/fragment_registry">
+        <action
+            android:id="@+id/action_navigation_chat_registry_to_navigation_chat_fragment"
+            app:destination="@id/navigation_chat_fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_chat_fragment"
+        android:name="aslan.aslanov.drops.ui.fragment.chat.ChatFragment"
+        android:label="Chat"
+        tools:layout="@layout/fragment_chat" />
+</navigation>

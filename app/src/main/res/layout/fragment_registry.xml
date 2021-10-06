@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.fragment.loginOrRegister.RegistryFragment">
+
+        <EditText
+            android:id="@+id/edit_text_username"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_10dp"
+            android:autofillHints="username"
+            android:background="@drawable/bg_edit_text"
+            android:hint="Username here"
+            android:inputType="textPersonName"
+            android:minHeight="@dimen/min_size"
+            android:textAppearance="@style/LoginStyle"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.4" />
+
+        <EditText
+            android:id="@+id/edit_text_password"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_10dp"
+            android:autofillHints="password"
+            android:background="@drawable/bg_edit_text"
+            android:hint="Password here"
+            android:inputType="textVisiblePassword"
+            android:minHeight="@dimen/min_size"
+            android:textAppearance="@style/LoginStyle"
+            app:layout_constraintEnd_toEndOf="@+id/edit_text_username"
+            app:layout_constraintStart_toStartOf="@+id/edit_text_username"
+            app:layout_constraintTop_toBottomOf="@+id/edit_text_username" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/button_registry"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_10dp"
+            android:background="@drawable/bg_button"
+            android:text="Login"
+            android:textAllCaps="false"
+            android:textAppearance="@style/HeaderStyle"
+            app:layout_constraintEnd_toEndOf="@+id/edit_text_username"
+            app:layout_constraintStart_toStartOf="@+id/edit_text_username"
+            app:layout_constraintTop_toBottomOf="@+id/edit_text_password"
+            app:layout_goneMarginTop="@dimen/margin_10dp" />
+
+        <TextView
+            android:id="@+id/text_view_privacy"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Is there a way to have inputType set to textMultiLine\n and imeOptions to actionSend? I see an Enter key on the \n S4 keyboard instead of send when I set inputType"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextStyle"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/button_registry"
+            app:layout_constraintTop_toBottomOf="@+id/button_registry" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

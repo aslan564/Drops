@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "127959760559",
+    "project_id": "drops-14d61",
+    "storage_bucket": "drops-14d61.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:127959760559:android:acf36d58a75deb66105e5a",
+        "android_client_info": {
+          "package_name": "aslan.aslanov.drops"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "127959760559-70oll6hk4k2lsdsspnco2jt97l0edmjo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAsmsYaex07YFaZXGETwkP6Pa4cvnYkJgQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "127959760559-70oll6hk4k2lsdsspnco2jt97l0edmjo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
