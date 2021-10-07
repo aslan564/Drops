@@ -4,4 +4,11 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="text_message_here">Text message here</string>
     <string name="errorMessage">This field must not be null</string>
+    <string name="register">Register</string>
+    <string name="login">Login</string>
+    <string name="password_here">Password here</string>
+    <string name="long_text">Is there a way to have inputType set to textMultiLine\n and imeOptions to actionSend?\n I see an Enter key on the \n S4 keyboard instead of send when I set inputType</string>
+    <string name="username_here">Email here </string>
+    <string name="loading">You have to wait a bit</string>
+    <string name="wait">Wait until process</string>
 </resources>

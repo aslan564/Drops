@@ -1,5 +1,9 @@
 package aslan.aslanov.drops.ui.fragment.loginOrRegister;
 
+import static aslan.aslanov.drops.util.SharedManager.getLoginStatus;
+import static aslan.aslanov.drops.util.SharedManager.setLoginOrRegister;
+
+import android.app.AlertDialog;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -7,6 +11,8 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
@@ -30,12 +36,15 @@ import java.util.Objects;
 import aslan.aslanov.drops.R;
 import aslan.aslanov.drops.databinding.FragmentRegistryBinding;
 import aslan.aslanov.drops.util.BaseFragment;
+import aslan.aslanov.drops.util.BaseViewModelFactory;
+import aslan.aslanov.drops.util.RequestStatus;
 
 
 public class RegistryFragment extends BaseFragment {
     private static final String TAG = "RegistryFragment";
-    private FirebaseAuth mAuth;
     private FragmentRegistryBinding fragmentRegistryBinding;
+    private RegistryViewModel registryViewModel;
+    private AlertDialog dialog;
 
 
     public RegistryFragment() {
@@ -61,26 +70,9 @@ public class RegistryFragment extends BaseFragment {
     @Override
     public void onStart() {
         super.onStart();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        updateUI(currentUser);
+        updateUI();
     }
 
-    private void updateUI(FirebaseUser currentUser) {
-        if (currentUser != null) {
-            // Name, email address, and profile photo Url
-            String name = currentUser.getDisplayName();
-            String email = currentUser.getEmail();
-            Uri photoUrl = currentUser.getPhotoUrl();
-
-            // Check if user's email is verified
-            boolean emailVerified = currentUser.isEmailVerified();
-
-            // The user's ID, unique to the Firebase project. Do NOT use this value to
-            // authenticate with your backend server, if you have one. Use
-            // FirebaseUser.getIdToken() instead.
-            String uid = currentUser.getUid();
-        }
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -94,8 +86,10 @@ public class RegistryFragment extends BaseFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        mAuth = FirebaseAuth.getInstance();
+        BaseViewModelFactory factory = new BaseViewModelFactory();
+        registryViewModel = new ViewModelProvider(getViewModelStore(), factory).get(RegistryViewModel.class);
+        observeRegistry(view);
+        dialog = createDialog();
         fragmentRegistryBinding.buttonRegistry.setOnClickListener(view1 -> {
             String email = fragmentRegistryBinding.editTextUsername.getText().toString();
             String password = fragmentRegistryBinding.editTextPassword.getText().toString();
@@ -105,30 +99,76 @@ public class RegistryFragment extends BaseFragment {
                 fragmentRegistryBinding.editTextPassword.setError(getString(R.string.errorMessage));
             } else {
 
-                createUser(email, password, view);
+                registryViewModel.registerOrLogin(email, password, requireContext());
+            }
+        });
+        fragmentRegistryBinding.textViewRegisterOrLogin.setOnClickListener(view12 -> {
+
+            if (getLoginStatus(requireContext())) {
+                setLoginOrRegister(requireContext(), false);
+                Log.d(TAG, "updateUI-----------------: 1 " + getLoginStatus(requireContext()));
+                fragmentRegistryBinding.textViewRegisterOrLogin.setText(getString(R.string.register));
+                fragmentRegistryBinding.buttonRegistry.setText(getString(R.string.register));
+            } else {
+                setLoginOrRegister(requireContext(), true);
+                Log.d(TAG, "updateUI-----------------: 2 " + getLoginStatus(requireContext()));
+                fragmentRegistryBinding.textViewRegisterOrLogin.setText(getString(R.string.login));
+                fragmentRegistryBinding.buttonRegistry.setText(getString(R.string.login));
             }
         });
     }
 
-    private void createUser(String email, String password, View view) {
-        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+    private void observeRegistry(View view) {
+
+        registryViewModel.errorMessage.observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) {
-                    Log.d(TAG, "signInWithEmail:success");
-                    FirebaseUser user = mAuth.getCurrentUser();
-                    updateUI(user);
-                    Navigation.findNavController(view).navigate(RegistryFragmentDirections.actionNavigationChatRegistryToNavigationChatFragment());
-                } else {
-                    // If sign in fails, display a message to the user.
-                    Log.w(TAG, "signInWithEmail:failure", task.getException());
-                    createToast("Authentication failed.");
-                    updateUI(null);
+            public void onChanged(String s) {
+                if (s != null) {
+                    Toast.makeText(requireContext(), s, Toast.LENGTH_SHORT).show();
                 }
             }
-        }).addOnCanceledListener(() -> createToast("Registry cancelled")).addOnFailureListener(e -> createToast("Registry failure"));
+        });
+        registryViewModel.requestStatusLiveData.observe(getViewLifecycleOwner(), new Observer<RequestStatus>() {
+            @Override
+            public void onChanged(RequestStatus requestStatus) {
+                if (requestStatus != null) {
+                    switch (requestStatus) {
+                        case ERROR:
+                            Log.d(TAG, "onChanged: " + Log.ERROR);
+                            dialog.cancel();
+                            break;
+                        case LOADING:
+                            //show progress
+                            dialog.show();
+                            break;
+                        case SUCCESS:
+                            dialog.dismiss();
+                            Navigation.findNavController(view).navigate(RegistryFragmentDirections.actionNavigationChatRegistryToNavigationChatFragment());
+                            break;
+                    }
+                }
+            }
+        });
     }
 
+    private void updateUI() {
+
+        if (getLoginStatus(requireContext())) {
+            fragmentRegistryBinding.textViewRegisterOrLogin.setText(getString(R.string.login));
+            fragmentRegistryBinding.buttonRegistry.setText(getString(R.string.login));
+        } else {
+            fragmentRegistryBinding.textViewRegisterOrLogin.setText(getString(R.string.register));
+            fragmentRegistryBinding.buttonRegistry.setText(getString(R.string.register));
+        }
+    }
+
+    public AlertDialog createDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        builder.setMessage(getString(R.string.loading))
+                .setCancelable(false)
+                .setTitle(getString(R.string.wait));
+        return builder.create();
+    }
     private void createToast(String message) {
         Toast.makeText(getContext(), message,
                 Toast.LENGTH_SHORT).show();
