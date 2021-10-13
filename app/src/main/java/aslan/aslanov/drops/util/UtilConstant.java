@@ -4,7 +4,11 @@ import android.net.Uri;
 
 import com.google.firebase.auth.FirebaseUser;
 
-public class Util {
+public class UtilConstant {
+    public static final int SENDER = 8215;
+    public static final int RECEIVER = 5064;
+    public static final String MESSAGE_CHANNEL = "messages";
+
   /*  private static void updateUI(FirebaseUser currentUser) {
         if (currentUser != null) {
             // Name, email address, and profile photo Url

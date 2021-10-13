@@ -8,7 +8,7 @@
     <string name="login">Login</string>
     <string name="password_here">Password here</string>
     <string name="long_text">Is there a way to have inputType set to textMultiLine\n and imeOptions to actionSend?\n I see an Enter key on the \n S4 keyboard instead of send when I set inputType</string>
-    <string name="username_here">Email here </string>
+    <string name="username_here">Email here(someemail@gmail.com)</string>
     <string name="loading">You have to wait a bit</string>
     <string name="wait">Wait until process</string>
 </resources>

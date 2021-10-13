@@ -37,7 +37,7 @@
             android:autofillHints="password"
             android:background="@drawable/bg_edit_text"
             android:hint="@string/password_here"
-            android:inputType="textVisiblePassword"
+            android:inputType="textPassword"
             android:minHeight="@dimen/min_size"
             android:textAppearance="@style/LoginStyle"
             app:layout_constraintEnd_toEndOf="@+id/edit_text_username"
